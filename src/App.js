@@ -20,32 +20,19 @@ class App extends Component {
 
     ContactsAPI.remove(contact)
   }
-
-  createContact(contact) {
-    ContactsAPI.create(contact).then(contact => {
-      this.setState(state => ({
-        contacts: state.contacts.concat([ contact ])
-      }))
-    })
-  }
-
   render() {
     return (
-      <div>
-        <Route exact path='/' render={() => (
-          <ListContacts
-            onDeleteContact={this.removeContact}
-            contacts={this.state.contacts}
-          />
-        )}/>
-        <Route path='/create' render={({ history }) => (
-          <CreateContact
-            onCreateContact={(contact) => {
-              this.createContact(contact)
-              history.push('/')
-            }}
-          />
-        )}/>
+      <div className="app">
+          <Route exact path="/" render={()=>(
+            //You can pass props to the component as well.
+            <ListContacts
+              onDeleteContact={this.removeContact} contacts={this.state.contacts}
+              onNavigate={()=>{
+                this.setState({ screen: 'create'})
+              }}
+            />
+          )}/>
+        <Route path="/create" component={CreateContact}/>
       </div>
     )
   }
